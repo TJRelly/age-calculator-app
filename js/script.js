@@ -29,13 +29,14 @@ svg.onclick = calculate
 
 function calculate() {
     let day = dayInput.value
-    let month = monthInput.value -1
+    let month = monthInput.value
     let year = yearInput.value
 
-    let date = new Date(year, month, day)
+    let date = new Date(year, month - 1, day)
 
     clearInputs()
-    if(isEmpty(day, month, year)) error()
+    if(isEmpty(day, month, year)) error(day, month, year)
+    inputError(day, month, year)
 
     years.innerText = getYearsMonthsDays(date)[0]
 
@@ -48,7 +49,37 @@ function getYearsMonthsDays(date){
 }
 
 function isEmpty(day, month, year) {
-    return day === '' || month === '' || year === ''
+    return day == 0 || month == 0 || year == 0
+}
+
+function inputError(day, month, year){
+    if (day > 31) {
+        dayError.innerText = 'Must be a valid day'
+        dayLabel.style.color = redText
+        dayInput.style.borderColor = redBorder
+        monthLabel.style.color = redText
+        monthInput.style.borderColor = redBorder
+        yearLabel.style.color = redText
+        yearInput.style.borderColor = redBorder
+    }
+    if (month > 12) {
+        monthError.innerText = 'Must be a valid month'
+        monthLabel.style.color = redText
+        monthInput.style.borderColor = redBorder
+        dayLabel.style.color = redText
+        dayInput.style.borderColor = redBorder
+        yearLabel.style.color = redText
+        yearInput.style.borderColor = redBorder
+    }
+    if (year >= currYear) {
+        yearError.innerText = 'Must be in the past'
+        yearLabel.style.color = redText
+        yearInput.style.borderColor = redBorder
+        monthLabel.style.color = redText
+        monthInput.style.borderColor = redBorder
+        dayLabel.style.color = redText
+        dayInput.style.borderColor = redBorder
+    }
 }
 
 function error(day, month, year) {
