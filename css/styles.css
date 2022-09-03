@@ -219,7 +219,7 @@ p {
 
 /*********** Media *********/
 
-@media (min-width: 600px) {
+@media (min-width: 650px) {
 
     .flex{
         gap: 1.5rem;
@@ -235,7 +235,7 @@ p {
     }
 
     .entries {
-        width: 75%;
+        width: 80%;
     }
 
     label {
