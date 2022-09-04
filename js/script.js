@@ -22,13 +22,54 @@ let currMonth = today.getMonth() + 1
 let currDay = today.getDate()
 let currYear = today.getFullYear()
 
+const redText = "hsl(var(--light-red-var), .75)"
+const redBorder = "hsl(var(--light-red-var), .55)"
+
 svg.onclick = calculate
 
 function calculate() {
-    let year = yearInput.value
-    let month = monthInput.value
     let day = dayInput.value
+    let month = monthInput.value -1
+    let year = yearInput.value
 
+    let date = new Date(year, month, day)
+
+    clearInputs()
+    if(isEmpty(day, month, year)) error()
+
+    years.innerText = getYearsMonthsDays(date)[0]
+
+}
+
+function getYearsMonthsDays(date){
+    let milliYears = today - date
+    let years = milliYears / 31556952000
+    return [Math.floor(years)]
+}
+
+function isEmpty(day, month, year) {
+    return day === '' || month === '' || year === ''
+}
+
+function error(day, month, year) {
+    if (!day) {
+        dayError.innerText = 'This field is required'
+        dayLabel.style.color = redText
+        dayInput.style.borderColor = redBorder
+    }
+    if (!month) {
+        monthError.innerText = 'This field is required'
+        monthLabel.style.color = redText
+        monthInput.style.borderColor = redBorder
+    }
+    if (!year) {
+        yearError.innerText = 'This field is required'
+        yearLabel.style.color = redText
+        yearInput.style.borderColor = redBorder
+    }
+}
+
+function clearInputs() {
     dayError.innerText = ''
     monthError.innerText = ''
     yearError.innerText = ''
@@ -37,25 +78,7 @@ function calculate() {
     monthLabel.style.color = ''
     yearLabel.style.color = ''
 
-    if (day < 1) {
-        dayError.innerText = 'This field is required'
-        dayLabel.style.color = 'var(--light-red)'
-        dayInput.style.borderColor = 'var(--light-red)'
-    }
-    if (month < 1) {
-        monthError.innerText = 'This field is required'
-        monthLabel.style.color = 'var(--light-red)'
-    }
-    if (year < 1) {
-        yearError.innerText = 'This field is required'
-        yearLabel.style.color = 'var(--light-red)'
-    }
-
-    let d = new Date(year, month-1, day)
-
-    let yearsPassed = currYear - year
-
-    if (month < currMonth) years.innerText = yearsPassed - 1
-    else if (currMonth == month && day < currDay) years.innerText = yearsPassed - 1
-    else years.innerText = yearsPassed
+    dayInput.style.borderColor = ''
+    monthInput.style.borderColor = ''
+    yearInput.style.borderColor = ''
 }
