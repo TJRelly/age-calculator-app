@@ -29,20 +29,23 @@
   <main class="grid">
     <div class="container grid">
       <section class="entries flex">
-        <form action="">
+        <form class="grid" data-spacing="small" action="">
           <label class="grid" data-spacing="small" for="day">DAY
-            <input type="number" id="day" name="day" placeholder="DD">
+            <input type="text" id="day" name="day" placeholder="DD">
           </label>
+          <p></p>
         </form>
-        <form action="">
+        <form class="grid" data-spacing="small" action="">
           <label class="grid" data-spacing="small" for="month">MONTH
-            <input type="number" id="month" name="month" placeholder="MM">
+            <input type="text" id="month" name="month" placeholder="MM">
           </label>
+          <p></p>
         </form>
-        <form action="">
+        <form class="grid" data-spacing="small" action="">
           <label class="grid" data-spacing="small" for="year">YEAR
-            <input type="number" id="year" name="year" placeholder="YYYY">
+            <input type="text" id="year" name="year" placeholder="YYYY">
           </label>
+          <p></p>
         </form>
       </section>
       <section class="divider flex">
@@ -54,9 +57,9 @@
         <div class="line"></div>
       </section>
       <section class="results">
-        <h1><span>--</span> years</h1>
-        <h1><span>--</span> months</h1>
-        <h1><span>--</span> days</h1>
+        <h1><span>- -</span> years</h1>
+        <h1><span>- -</span> months</h1>
+        <h1><span>- -</span> days</h1>
       </section>
     </div>
   </main>
