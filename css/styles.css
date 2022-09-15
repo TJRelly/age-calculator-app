@@ -77,15 +77,16 @@ svg {
     /********** Colors ***********/
 
     --purple: hsl(259, 100%, 65%);
+    --purple-var: 259, 100%, 65%;
     --light-red: hsl(0, 100%, 67%);
 
     --white: hsl(0, 0%, 100%);
     --off-white: hsl(0, 0%, 94%);
     --light-grey: hsl(0, 0%, 86%);
     --smokey-grey: hsl(0, 1%, 44%);
-    --light-smokey-grey: hsl(0, 1%, 44%, 0.8);
-    --lighter-smokey-grey: hsl(0, 1%, 44%, 0.7);
+    --smokey-grey-var: 0, 1%, 44%;
     --off-black: hsl(0, 0%, 8%);
+    --off-black-var: 0, 0%, 8%;
 
     /******** Typography *********/
 
@@ -95,9 +96,12 @@ svg {
     --fw-bold: 700;
     --fw-extra-bold: 800;
 
-    --fs-400: 0.8rem;
-    --fs-600: 1.2rem;
-    --fs-800: 3.2rem;
+    --fs-300: 0.8rem;
+    --fs-400: 1rem;
+    --fs-500: 1.2rem;
+    --fs-600: 2rem;
+    --fs-700: 3.1rem;
+    --fs-800: 5.5rem;
 }
 
 /*********** Styles *********/
@@ -105,7 +109,7 @@ svg {
 .grid {
     display: grid;
     align-items: start;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .grid[data-spacing="small"] {
@@ -131,11 +135,12 @@ main {
 }
 
 .container {
-    background: var(--white);
-    padding: 3.5rem 2rem;
-    border-radius: 1rem 1rem 25%;
     max-width: 93%;
     margin: 0 auto;
+    border-radius: 1rem 1rem 25%;
+    box-shadow: 0.1rem 0.1rem 1rem hsl(var(--off-black-var), .2);
+    background: var(--white);
+    padding: 3.5rem 2rem;
 }
 
 .entries {
@@ -144,28 +149,39 @@ main {
 }
 
 label {
-    letter-spacing: 0.2rem;
-    font-size: var(--fs-400);
+    letter-spacing: 0.15rem;
+    font-size: var(--fs-300);
     font-weight: var(--fw-bold);
-    color: var(--light-smokey-grey);
-}
-
-input {
-    font-size: var(--fs-600);
-    padding: 0.5rem 0.9rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--light-grey);
-    width: 100%;
+    color: hsl(var(--smokey-grey-var), 0.9);
 }
 
 ::placeholder {
-    color: var(--lighter-smokey-grey);
+    color: hsl(var(--smokey-grey-var), 0.6);
+}
+
+input {
+    font-size: var(--fs-500);
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.5rem;
+    border: 2px solid hsl(var(--smokey-grey-var), .2);
+    width: 100%;
+}
+
+input:hover{
+    cursor: pointer;
+    border: 2px solid hsl(var(--purple-var), .5);
+}
+
+p {
+    font-size: small;
+    font-style: italic;
+    color: var(--light-red);
 }
 
 .results {
     font-weight: var(--fw-extra-bold);
     font-style: italic;
-    font-size: var(--fs-800);
+    font-size: var(--fs-700);
 }
 
 .results span {
@@ -190,24 +206,60 @@ input {
     border-radius: 50%;
     width: 3.8rem;
     height: 3.8rem;
-    padding: 1.2rem;
+    padding: 1rem;
     z-index: 2;
+}
+
+.divider svg:hover {
+    background: var(--off-black);
+    cursor: pointer;
 }
 
 
 /*********** Media *********/
 
 @media (min-width: 600px) {
+
+    .flex{
+        gap: 1.5rem;
+    }
+
+    .grid {
+        gap: 0;
+    }
+
     .container {
-        padding: 2rem;
-        max-width: 50rem;
+        padding: 3rem;
+        max-width: 52.5rem;
     }
 
     .entries {
         width: 75%;
     }
 
+    label {
+        font-size: var(--fs-400);
+    }
+
+    input {
+        padding: 1rem;
+        font-size: var(--fs-600);
+    }
+
+    .results {
+        font-size: var(--fs-800);
+    }
+
     .divider {
         justify-content: flex-end;
+    }
+
+    .divider svg {
+        background: var(--purple);
+        border-radius: 50%;
+        width: 5.5rem;
+        height: 5.5rem;
+        padding: 1.45rem;
+        z-index: 2;
     }
 }
