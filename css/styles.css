@@ -97,7 +97,7 @@ svg {
 
     --fs-400: 0.8rem;
     --fs-600: 1.2rem;
-    --fs-800: 3.3rem;
+    --fs-800: 3.2rem;
 }
 
 /*********** Styles *********/
@@ -152,7 +152,7 @@ label {
 
 input {
     font-size: var(--fs-600);
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.9rem;
     border-radius: 0.5rem;
     border: 1px solid var(--light-grey);
     width: 100%;
