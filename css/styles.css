@@ -83,6 +83,8 @@ svg {
     --off-white: hsl(0, 0%, 94%);
     --light-grey: hsl(0, 0%, 86%);
     --smokey-grey: hsl(0, 1%, 44%);
+    --light-smokey-grey: hsl(0, 1%, 44%, 0.8);
+    --lighter-smokey-grey: hsl(0, 1%, 44%, 0.7);
     --off-black: hsl(0, 0%, 8%);
 
     /******** Typography *********/
@@ -93,9 +95,9 @@ svg {
     --fw-bold: 700;
     --fw-extra-bold: 800;
 
-    --fs-400: 1.125rem;
-    --fs-600: 2rem;
-    --fs-800: 3.75rem;
+    --fs-400: 0.75rem;
+    --fs-600: 1.25rem;
+    --fs-800: 3.25rem;
 }
 
 /*********** Styles *********/
@@ -104,6 +106,10 @@ svg {
     display: grid;
     align-items: start;
     gap: 1rem;
+}
+
+.grid[data-spacing="small"] {
+    gap: 0.5rem;
 }
 
 .flex {
@@ -126,9 +132,37 @@ main {
 
 .calculator {
     background: var(--white);
-    padding: 1rem;
-    max-width: 53.125rem;
+    padding: 2rem;
     min-width: 21.875rem;
+    border-radius: 1rem 1rem 25%;
+    overflow: auto;
+}
+
+.entries {
+    justify-content: space-between;
+}
+
+form,
+input {
+    width: 5.125rem;
+}
+
+label {
+    letter-spacing: 0.25rem;
+    font-size: var(--fs-400);
+    font-weight: var(--fw-bold);
+    color: var(--light-smokey-grey);
+}
+
+input {
+    font-size: var(--fs-600);
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--light-grey);
+}
+
+::placeholder {
+    color: var(--lighter-smokey-grey);
 }
 
 .results {
