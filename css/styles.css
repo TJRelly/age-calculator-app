@@ -1,4 +1,55 @@
-/********** Fonts *********/
+/********* Fonts ********/
+@font-face {
+    font-family: 'Poppins';
+    font-display: swap;
+    font-weight: 400;
+    src: url(../assets/fonts/Poppins-Regular.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-display: swap;
+    font-weight: 400;
+    font-style: italic;
+    src: url(../assets/fonts/Poppins-Italic.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-display: swap;
+    font-weight: 700;
+    src: url(../assets/fonts/Poppins-Bold.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-display: swap;
+    font-weight: 700;
+    src: url(../assets/fonts/Poppins-Bold.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-display: swap;
+    font-weight: 700;
+    font-style: italic;
+    src: url(../assets/fonts/Poppins-BoldItalic.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-display: swap;
+    font-weight: 800;
+    src: url(../assets/fonts/Poppins-ExtraBold.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Poppins';
+    font-display: swap;
+    font-weight: 800;
+    font-style: italic;
+    src: url(../assets/fonts/Poppins-ExtraBoldItalic.ttf) format('truetype');
+}
 
 /******* CSS reset *******/
 
@@ -22,26 +73,50 @@ svg {
 /********* Variables *********/
 
 :root {
+
     /********** Colors ***********/
-    
+
+    --purple: hsl(259, 100%, 65%);
+    --light-red: hsl(0, 100%, 67%);
+
+    --white: hsl(0, 0%, 100%);
+    --off-white: hsl(0, 0%, 94%);
+    --light-grey: hsl(0, 0%, 86%);
+    --smokey-grey: hsl(0, 1%, 44%);
+    --off-black: hsl(0, 0%, 8%);
 
     /******** Typography *********/
-   
+
+    --ff-default: 'Poppins', sans-serif;
+
+    --fw-regular: 400;
+    --fw-bold: 700;
+    --fw-extra-bold: 800;
+
+    --fs-400: 1.125rem;
+    --fs-600: 2rem;
+    --fs-800: 3.75rem;
 }
 
-
-
 /*********** Styles *********/
-
-
 
 .grid {
     display: grid;
     align-items: start;
+    gap: 1rem;
 }
 
 .flex {
     display: flex;
+    gap: 1rem;
+}
+
+body {
+    background: var(--off-white);
+    color: var(--off-black);
+    font-family: var(--ff-default);
+    font-weight: var(--fw-regular);
+    line-height: 1;
 }
 
 main {
@@ -49,9 +124,50 @@ main {
     place-content: center;
 }
 
+.calculator {
+    background: var(--white);
+    padding: 1rem;
+    max-width: 53.125rem;
+    min-width: 21.875rem;
+}
+
+.results {
+    font-weight: var(--fw-extra-bold);
+    font-style: italic;
+    font-size: var(--fs-800);
+}
+
+.results span {
+    color: var(--purple);
+}
+
+.divider {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.divider .line {
+    position: absolute;
+    border-bottom: 1px solid var(--light-grey);
+    width: 100%;
+    z-index: 1;
+}
+
+.divider svg {
+    background: var(--purple);
+    border-radius: 50%;
+    width: 4.125rem;
+    height: 4.125rem;
+    padding: 1.25rem;
+    z-index: 2;
+}
+
 
 /*********** Media *********/
 
 @media (min-width: 600px) {
-
+    .divider {
+        justify-content: flex-end;
+    }
 }
