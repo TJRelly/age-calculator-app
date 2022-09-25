@@ -1,0 +1,57 @@
+/********** Fonts *********/
+
+/******* CSS reset *******/
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    font: inherit
+}
+
+img,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+/********* Variables *********/
+
+:root {
+    /********** Colors ***********/
+    
+
+    /******** Typography *********/
+   
+}
+
+
+
+/*********** Styles *********/
+
+
+
+.grid {
+    display: grid;
+    align-items: start;
+}
+
+.flex {
+    display: flex;
+}
+
+main {
+    min-height: 100vh;
+    place-content: center;
+}
+
+
+/*********** Media *********/
+
+@media (min-width: 600px) {
+
+}
