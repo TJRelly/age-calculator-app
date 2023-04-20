@@ -95,9 +95,9 @@ svg {
     --fw-bold: 700;
     --fw-extra-bold: 800;
 
-    --fs-400: 0.75rem;
-    --fs-600: 1.25rem;
-    --fs-800: 3.25rem;
+    --fs-400: 0.8rem;
+    --fs-600: 1.2rem;
+    --fs-800: 3.3rem;
 }
 
 /*********** Styles *********/
@@ -105,7 +105,7 @@ svg {
 .grid {
     display: grid;
     align-items: start;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 .grid[data-spacing="small"] {
@@ -122,7 +122,7 @@ body {
     color: var(--off-black);
     font-family: var(--ff-default);
     font-weight: var(--fw-regular);
-    line-height: 1;
+    line-height: 1.2;
 }
 
 main {
@@ -130,25 +130,21 @@ main {
     place-content: center;
 }
 
-.calculator {
+.container {
     background: var(--white);
-    padding: 2rem;
-    min-width: 21.875rem;
+    padding: 3.5rem 2rem;
     border-radius: 1rem 1rem 25%;
-    overflow: auto;
+    max-width: 93%;
+    margin: 0 auto;
 }
 
 .entries {
     justify-content: space-between;
-}
-
-form,
-input {
-    width: 5.125rem;
+    max-width: 40rem;
 }
 
 label {
-    letter-spacing: 0.25rem;
+    letter-spacing: 0.2rem;
     font-size: var(--fs-400);
     font-weight: var(--fw-bold);
     color: var(--light-smokey-grey);
@@ -156,9 +152,10 @@ label {
 
 input {
     font-size: var(--fs-600);
-    padding: 0.25rem 0.75rem;
+    padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     border: 1px solid var(--light-grey);
+    width: 100%;
 }
 
 ::placeholder {
@@ -191,9 +188,9 @@ input {
 .divider svg {
     background: var(--purple);
     border-radius: 50%;
-    width: 4.125rem;
-    height: 4.125rem;
-    padding: 1.25rem;
+    width: 3.8rem;
+    height: 3.8rem;
+    padding: 1.2rem;
     z-index: 2;
 }
 
@@ -201,6 +198,15 @@ input {
 /*********** Media *********/
 
 @media (min-width: 600px) {
+    .container {
+        padding: 2rem;
+        max-width: 50rem;
+    }
+
+    .entries {
+        width: 75%;
+    }
+
     .divider {
         justify-content: flex-end;
     }
