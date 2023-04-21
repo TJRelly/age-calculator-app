@@ -39,13 +39,18 @@ function calculate() {
     inputError(day, month, year)
 
     years.innerText = getYearsMonthsDays(date)[0]
-
+    months.innerText = getYearsMonthsDays(date)[1]
+    days.innerText = getYearsMonthsDays(date)[2]
 }
 
 function getYearsMonthsDays(date){
     let milliYears = today - date
-    let years = milliYears / 31556952000
-    return [Math.floor(years)]
+    let years = Math.floor(milliYears / 31556952000)
+    let milliMonths = milliYears % 31556952000
+    let months = Math.floor(milliMonths/ 2629746000)
+    let milliDays = milliMonths % 2629746000
+    let days = Math.floor(milliDays / 86400000)
+    return [years, months, days]
 }
 
 function isEmpty(day, month, year) {
@@ -53,7 +58,7 @@ function isEmpty(day, month, year) {
 }
 
 function inputError(day, month, year){
-    if (day > 31) {
+    if (day > 31 || day < 0) {
         dayError.innerText = 'Must be a valid day'
         dayLabel.style.color = redText
         dayInput.style.borderColor = redBorder
@@ -62,7 +67,7 @@ function inputError(day, month, year){
         yearLabel.style.color = redText
         yearInput.style.borderColor = redBorder
     }
-    if (month > 12) {
+    if (month > 12 || month < 0) {
         monthError.innerText = 'Must be a valid month'
         monthLabel.style.color = redText
         monthInput.style.borderColor = redBorder
@@ -71,7 +76,7 @@ function inputError(day, month, year){
         yearLabel.style.color = redText
         yearInput.style.borderColor = redBorder
     }
-    if (year >= currYear) {
+    if (year > currYear || year < 0) {
         yearError.innerText = 'Must be in the past'
         yearLabel.style.color = redText
         yearInput.style.borderColor = redBorder
