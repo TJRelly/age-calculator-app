@@ -34,20 +34,27 @@ function calculate() {
 
     let date = new Date(year, month - 1, day)
 
-    clearInputs()
-    if(isEmpty(day, month, year)) error(day, month, year)
-    inputError(day, month, year)
+    console.log(moment(date))
 
-    years.innerText = getYearsMonthsDays(date)[0]
-    months.innerText = getYearsMonthsDays(date)[1]
-    days.innerText = getYearsMonthsDays(date)[2]
+    clearInputs()
+
+    if (isEmpty(day, month, year) || isError(day, month, year, date)) {
+        dateError(date)
+        error(day, month, year)
+        inputError(day, month, year)
+        clearResults()
+    } else {
+        years.innerText = getYearsMonthsDays(date)[0]
+        months.innerText = getYearsMonthsDays(date)[1]
+        days.innerText = getYearsMonthsDays(date)[2]
+    }
 }
 
-function getYearsMonthsDays(date){
+function getYearsMonthsDays(date) {
     let milliYears = today - date
     let years = Math.floor(milliYears / 31556952000)
     let milliMonths = milliYears % 31556952000
-    let months = Math.floor(milliMonths/ 2629746000)
+    let months = Math.floor(milliMonths / 2629746000)
     let milliDays = milliMonths % 2629746000
     let days = Math.floor(milliDays / 86400000)
     return [years, months, days]
@@ -57,7 +64,19 @@ function isEmpty(day, month, year) {
     return day == 0 || month == 0 || year == 0
 }
 
-function inputError(day, month, year){
+function isError(day, month, year, date) {
+    return (
+        (day > 31 || day < 0)
+        || (month > 12 || month < 0)
+        || (year > currYear || year < 0)
+        || !day
+        || !month
+        || !year
+        || !dateInPast(date, today)
+    )
+}
+
+function inputError(day, month, year) {
     if (day > 31 || day < 0) {
         dayError.innerText = 'Must be a valid day'
         dayLabel.style.color = redText
@@ -92,14 +111,39 @@ function error(day, month, year) {
         dayError.innerText = 'This field is required'
         dayLabel.style.color = redText
         dayInput.style.borderColor = redBorder
+        monthLabel.style.color = redText
+        monthInput.style.borderColor = redBorder
+        yearLabel.style.color = redText
+        yearInput.style.borderColor = redBorder
+
     }
     if (!month) {
         monthError.innerText = 'This field is required'
         monthLabel.style.color = redText
         monthInput.style.borderColor = redBorder
+        yearLabel.style.color = redText
+        yearInput.style.borderColor = redBorder
+        dayLabel.style.color = redText
+        dayInput.style.borderColor = redBorder
     }
     if (!year) {
         yearError.innerText = 'This field is required'
+        yearLabel.style.color = redText
+        yearInput.style.borderColor = redBorder
+        monthLabel.style.color = redText
+        monthInput.style.borderColor = redBorder
+        dayLabel.style.color = redText
+        dayInput.style.borderColor = redBorder
+    }
+}
+
+function dateError(date) {
+    if (!dateInPast(date, today)) {
+        dayError.innerText = 'Must be valid date'
+        dayLabel.style.color = redText
+        dayInput.style.borderColor = redBorder
+        monthLabel.style.color = redText
+        monthInput.style.borderColor = redBorder
         yearLabel.style.color = redText
         yearInput.style.borderColor = redBorder
     }
@@ -118,3 +162,14 @@ function clearInputs() {
     monthInput.style.borderColor = ''
     yearInput.style.borderColor = ''
 }
+
+function clearResults() {
+    years.innerText = '- -'
+    months.innerText = '- -'
+    days.innerText = '- -'
+}
+
+function dateInPast(firstDate, secondDate) {
+    return firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0)
+}
+
