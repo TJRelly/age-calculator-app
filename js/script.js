@@ -16,15 +16,11 @@ const days = document.querySelector('span.days')
 const months = document.querySelector('span.months')
 const years = document.querySelector('span.years')
 
-const today = new Date()
-
-let currMonth = today.getMonth() + 1
-let currDay = today.getDate()
-let currYear = today.getFullYear()
-
 const redText = "hsl(var(--light-red-var), .75)"
 const redBorder = "hsl(var(--light-red-var), .55)"
+
 const LocalDate = JSJoda.LocalDate
+let currYear = LocalDate.now().year()
 
 svg.onclick = calculate
 
@@ -53,8 +49,6 @@ function calculate() {
     let day = dayInput.value
     let month = monthInput.value
     let year = yearInput.value
-
-    let date = (day, month, year)
 
     clearInputs()
     if (isEmpty(day, month, year)) {
