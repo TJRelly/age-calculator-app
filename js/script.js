@@ -28,11 +28,26 @@ const LocalDate = JSJoda.LocalDate
 
 svg.onclick = calculate
 
-svg.keypress(function(event) {
-    if (event.keyCode == 13 || event.which == 13) {
-        event.preventDefault();
+dayInput.addEventListener('keypress', (event) => {
+    if (event.key == 'Enter' || event.which == 13) {
+        event.preventDefault()
+        svg.onclick()
     }
-});
+})
+
+monthInput.addEventListener('keypress', (event) => {
+    if (event.key == 'Enter' || event.which == 13) {
+        event.preventDefault()
+        svg.onclick()
+    }
+})
+
+yearInput.addEventListener('keypress', (event) => {
+    if (event.key == 'Enter' || event.which == 13) {
+        event.preventDefault()
+        svg.onclick()
+    }
+})
 
 function calculate() {
     let day = dayInput.value
@@ -45,8 +60,8 @@ function calculate() {
     if (isEmpty(day, month, year)) {
         emptyError(day, month, year)
         clearResults()
-    } 
-    
+    }
+
     if (isError(day, month, year)) {
         dateError(day, month, year)
         inputError(day, month, year)
@@ -65,7 +80,7 @@ function getYearsMonthsDays(day, month, year) {
     let d1 = LocalDate.now()
     let d2 = LocalDate.of(year, month, day)
     let str = d1.until(d2).toString()
-    
+
     let resArr = str.replace(/[P -]/g, ' ')
         .replace(/[Y]/, 'Y ')
         .replace(/[M]/, 'M ')
