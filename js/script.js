@@ -24,26 +24,30 @@ let currYear = LocalDate.now().year()
 
 svg.onclick = calculate
 
-dayInput.addEventListener('keypress', (event) => {
+function keypress(event) {
     if (event.key == 'Enter' || event.which == 13) {
         event.preventDefault()
-        svg.onclick()
+        return svg.onclick()
     }
+}
+
+dayInput.addEventListener('keypress', (event) => {
+    keypress(event)
 })
 
 monthInput.addEventListener('keypress', (event) => {
-    if (event.key == 'Enter' || event.which == 13) {
-        event.preventDefault()
-        svg.onclick()
-    }
+    keypress(event)
 })
 
 yearInput.addEventListener('keypress', (event) => {
-    if (event.key == 'Enter' || event.which == 13) {
-        event.preventDefault()
-        svg.onclick()
-    }
+    keypress(event)
 })
+
+let dayInputError = true
+let monthInputError = true
+let yearInputError = true
+let inputError = true
+let inTheFuture = true
 
 function calculate() {
     let day = dayInput.value
@@ -51,145 +55,30 @@ function calculate() {
     let year = yearInput.value
 
     clearInputs()
-    if (isEmpty(day, month, year)) {
-        emptyError(day, month, year)
-        clearResults()
-    }
+    clearResults()
 
-    if (isError(day, month, year)) {
-        dateError(day, month, year)
-        inputError(day, month, year)
-        futureError(day, month, year)
-        emptyError(day, month, year)
-        clearResults()
+    checkDay(day)
+    checkMonth(month)
+    checkYear(year)
 
-    } else {
-        years.innerText = getYearsMonthsDays(day, month, year).years || 0
-        months.innerText = getYearsMonthsDays(day, month, year).months || 0
-        days.innerText = getYearsMonthsDays(day, month, year).days || 0
-    }
-}
+    if (!dayInputError && !monthInputError && !yearInputError) checkInput(year, month, day)
 
-function getYearsMonthsDays(day, month, year) {
-    let d1 = LocalDate.now()
-    let d2 = LocalDate.of(year, month, day)
-    let str = d1.until(d2).toString()
+    if (!inputError) isInFuture(year, month, day)
 
-    let resArr = str.replace(/[P -]/g, ' ')
-        .replace(/[Y]/, 'Y ')
-        .replace(/[M]/, 'M ')
-        .split(' ')
+    console.log(inTheFuture)
 
-    let res = resArr.reduce((obj, item) => {
-        if (item.includes('Y')) obj['years'] = +item.replace('Y', '')
-        if (item.includes('M')) obj['months'] = +item.replace('M', '')
-        if (item.includes('D')) obj['days'] = +item.replace('D', '')
-        return obj
-    }, {})
-
-    return res
-}
-
-function isEmpty(day, month, year) {
-    return day == 0 || month == 0 || year == 0
-}
-
-function isError(day, month, year) {
-    return (
-        (day > 31 || day < 0)
-        || (month > 12 || month < 0)
-        || (year > currYear || year < 0)
-        || !day
-        || !month
-        || !year
-        || !isDateValid(day, month, year)
-        || isInFuture(day, month, year)
-    )
-}
-
-function inputError(day, month, year) {
-    if (day > 31 || day < 0) {
-        dayError.innerText = 'Must be a valid day'
-        dayLabel.style.color = redText
-        dayInput.style.borderColor = redBorder
-        monthLabel.style.color = redText
-        monthInput.style.borderColor = redBorder
-        yearLabel.style.color = redText
-        yearInput.style.borderColor = redBorder
-    }
-    if (month > 12 || month < 0) {
-        monthError.innerText = 'Must be a valid month'
-        monthLabel.style.color = redText
-        monthInput.style.borderColor = redBorder
-        dayLabel.style.color = redText
-        dayInput.style.borderColor = redBorder
-        yearLabel.style.color = redText
-        yearInput.style.borderColor = redBorder
-    }
-    if (year > currYear || year < 0) {
-        yearError.innerText = 'Must be in the past'
-        yearLabel.style.color = redText
-        yearInput.style.borderColor = redBorder
-        monthLabel.style.color = redText
-        monthInput.style.borderColor = redBorder
-        dayLabel.style.color = redText
-        dayInput.style.borderColor = redBorder
+    if (!inTheFuture) {
+        getYearsMonthsDays(year, month, day)
+        years.innerText = getYearsMonthsDays(year, month, day).years || 0
+        months.innerText = getYearsMonthsDays(year, month, day).months || 0
+        days.innerText = getYearsMonthsDays(year, month, day).days || 0
     }
 }
 
-function emptyError(day, month, year) {
-    if (!day) {
-        dayError.innerText = 'This field is required'
-        dayLabel.style.color = redText
-        dayInput.style.borderColor = redBorder
-        monthLabel.style.color = redText
-        monthInput.style.borderColor = redBorder
-        yearLabel.style.color = redText
-        yearInput.style.borderColor = redBorder
-
-    }
-    if (!month) {
-        monthError.innerText = 'This field is required'
-        monthLabel.style.color = redText
-        monthInput.style.borderColor = redBorder
-        yearLabel.style.color = redText
-        yearInput.style.borderColor = redBorder
-        dayLabel.style.color = redText
-        dayInput.style.borderColor = redBorder
-    }
-    if (!year) {
-        yearError.innerText = 'This field is required'
-        yearLabel.style.color = redText
-        yearInput.style.borderColor = redBorder
-        monthLabel.style.color = redText
-        monthInput.style.borderColor = redBorder
-        dayLabel.style.color = redText
-        dayInput.style.borderColor = redBorder
-    }
-}
-
-function dateError(day, month, year) {
-    if (!isDateValid(day, month, year)) {
-        dayError.innerText = 'Must be valid date'
-        dayLabel.style.color = redText
-        dayInput.style.borderColor = redBorder
-        monthLabel.style.color = redText
-        monthInput.style.borderColor = redBorder
-        yearLabel.style.color = redText
-        yearInput.style.borderColor = redBorder
-    }
-}
-
-function futureError(day, month, year) {
-    if (isInFuture(day, month, year)) {
-        dayError.innerText = 'This date has not occured'
-        dayLabel.style.color = redText
-        dayInput.style.borderColor = redBorder
-        monthLabel.style.color = redText
-        monthInput.style.borderColor = redBorder
-        yearLabel.style.color = redText
-        yearInput.style.borderColor = redBorder
-    }
+function clearResults() {
+    years.innerText = '- -'
+    months.innerText = '- -'
+    days.innerText = '- -'
 }
 
 function clearInputs() {
@@ -206,29 +95,99 @@ function clearInputs() {
     yearInput.style.borderColor = ''
 }
 
-function clearResults() {
-    years.innerText = '- -'
-    months.innerText = '- -'
-    days.innerText = '- -'
+function everthingRed() {
+    dayLabel.style.color = redText
+    dayInput.style.borderColor = redBorder
+    monthLabel.style.color = redText
+    monthInput.style.borderColor = redBorder
+    yearLabel.style.color = redText
+    yearInput.style.borderColor = redBorder
 }
 
-function isDateValid(day, month, year) {
-    try { if (LocalDate.of(year, month, day)) return true }
-    catch {
-        console.log('valid: invalid date')
-        return false
+function checkDay(day) {
+    dayInputError = true
+    if (!day) {
+        dayError.innerText = 'This field is required'
+        everthingRed()
+    }
+    else if (day > 31 || day < 1 || isNaN(day)) {
+        dayError.innerText = 'Must be a valid day'
+        everthingRed()
+    } else {
+        dayInputError = false
     }
 }
 
-function isInFuture(day, month, year) {
+function checkMonth(month) {
+    monthInputError = true
+    if (!month) {
+        monthError.innerText = 'This field is required'
+        everthingRed()
+    }
+    else if (month > 12 || month < 1 || isNaN(month)) {
+        monthError.innerText = 'Must be a valid month'
+        everthingRed()
+    } else {
+        monthInputError = false
+    }
+}
+
+function checkYear(year) {
+    yearInputError = true
+    if (!year) {
+        yearError.innerText = 'This field is required'
+        everthingRed()
+    }
+    else if (year > currYear || year < 0) {
+        yearError.innerText = 'Year has not occured'
+        everthingRed()
+    }
+    else if (isNaN(year)) {
+        yearError.innerText = 'Must be a valid year'
+        everthingRed()
+    } else {
+        yearInputError = false
+    }
+}
+
+function getYearsMonthsDays(year, month, day) {
+    let d1 = LocalDate.now()
+    let d2 = LocalDate.of(year, month, day)
+    let str = d1.until(d2).toString()
+
+    let resArr = str.replace(/[P -]/g, ' ')
+        .replace(/[Y]/, 'Y ')
+        .replace(/[M]/, 'M ')
+        .split(' ')
+
+    let resObj = resArr.reduce((obj, item) => {
+        if (item.includes('Y')) obj['years'] = +item.replace('Y', '')
+        if (item.includes('M')) obj['months'] = +item.replace('M', '')
+        if (item.includes('D')) obj['days'] = +item.replace('D', '')
+        return obj
+    }, {})
+
+    return resObj
+}
+
+
+function checkInput(year, month, day) {
     try {
-        let d1 = LocalDate.of(year, month, day)
-        let d2 = LocalDate.now()
-        return d1.isAfter(d2)
+        if (LocalDate.of(year, month, day)) return inputError = false
     }
     catch {
-        console.log('future: invalid date')
-        return false
+        dayError.innerText = 'Must be valid date'
+        everthingRed()
+        return inputError = true
     }
 }
 
+function isInFuture(year, month, day) {
+    let d1 = LocalDate.of(year, month, day)
+    let d2 = LocalDate.now()
+    if(d1.isAfter(d2)) {
+        dayError.innerText = 'Date has not occured'
+        everthingRed()
+    }
+    return inTheFuture = d1.isAfter(d2)
+}
