@@ -16,6 +16,10 @@ const days = document.querySelector("span.days")
 const months = document.querySelector("span.months")
 const years = document.querySelector("span.years")
 
+const daysText = document.querySelector(".days-text")
+const monthsText = document.querySelector(".months-text")
+const yearsText = document.querySelector(".years-text")
+
 const redText = "hsl(var(--light-red-var), .75)"
 const redBorder = "hsl(var(--light-red-var), .55)"
 
@@ -67,7 +71,11 @@ function calculate() {
     years.innerText = getYearsMonthsDays(year, month, day).years || 0
     months.innerText = getYearsMonthsDays(year, month, day).months || 0
     days.innerText = getYearsMonthsDays(year, month, day).days || 0
+    days.innerText === "1" ? daysText.innerText = "day" : daysText.innerText = "days"
+    months.innerText === "1" ? monthsText.innerText = "month" : monthsText.innerText = "months"
+    years.innerText === "1" ? yearsText.innerText = "year" : yearsText.innerText = "years"
   }
+
 }
 
 function clearResults() {
