@@ -71,11 +71,16 @@ function calculate() {
     years.innerText = getYearsMonthsDays(year, month, day).years || 0
     months.innerText = getYearsMonthsDays(year, month, day).months || 0
     days.innerText = getYearsMonthsDays(year, month, day).days || 0
-    days.innerText === "1" ? daysText.innerText = "day" : daysText.innerText = "days"
-    months.innerText === "1" ? monthsText.innerText = "month" : monthsText.innerText = "months"
-    years.innerText === "1" ? yearsText.innerText = "year" : yearsText.innerText = "years"
+    days.innerText === "1"
+      ? (daysText.innerText = "day")
+      : (daysText.innerText = "days")
+    months.innerText === "1"
+      ? (monthsText.innerText = "month")
+      : (monthsText.innerText = "months")
+    years.innerText === "1"
+      ? (yearsText.innerText = "year")
+      : (yearsText.innerText = "years")
   }
-
 }
 
 function clearResults() {
