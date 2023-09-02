@@ -28,28 +28,40 @@ const LocalDate = JSJoda.LocalDate
 
 svg.onclick = calculate
 
+svg.keypress(function(event) {
+    if (event.keyCode == 13 || event.which == 13) {
+        event.preventDefault();
+    }
+});
+
 function calculate() {
     let day = dayInput.value
     let month = monthInput.value
     let year = yearInput.value
 
-    let date = new Date(year, month - 1, day)
+    let date = (day, month, year)
 
     clearInputs()
-    if (isEmpty(day, month, year) || isError(day, month, year)) {
+    if (isEmpty(day, month, year)) {
         emptyError(day, month, year)
-        dateError(day, month, year, date)
-        futureError(day, month, year)
-        inputError(day, month, year)
         clearResults()
+    } 
+    
+    if (isError(day, month, year)) {
+        dateError(day, month, year)
+        inputError(day, month, year)
+        futureError(day, month, year)
+        emptyError(day, month, year)
+        clearResults()
+
     } else {
-        years.innerText = getYearsMonthsDays(year, month, day).years || 0
-        months.innerText = getYearsMonthsDays(year, month, day).months || 0
-        days.innerText = getYearsMonthsDays(year, month, day).days || 0
+        years.innerText = getYearsMonthsDays(day, month, year).years || 0
+        months.innerText = getYearsMonthsDays(day, month, year).months || 0
+        days.innerText = getYearsMonthsDays(day, month, year).days || 0
     }
 }
 
-function getYearsMonthsDays(year, month, day) {
+function getYearsMonthsDays(day, month, year) {
     let d1 = LocalDate.now()
     let d2 = LocalDate.of(year, month, day)
     let str = d1.until(d2).toString()
@@ -161,7 +173,7 @@ function dateError(day, month, year) {
 
 function futureError(day, month, year) {
     if (isInFuture(day, month, year)) {
-        dayError.innerText = 'Must be valid date'
+        dayError.innerText = 'This date has not occured'
         dayLabel.style.color = redText
         dayInput.style.borderColor = redBorder
         monthLabel.style.color = redText
