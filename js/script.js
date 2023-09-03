@@ -24,6 +24,7 @@ let currYear = today.getFullYear()
 
 const redText = "hsl(var(--light-red-var), .75)"
 const redBorder = "hsl(var(--light-red-var), .55)"
+const LocalDate = JSJoda.LocalDate
 
 svg.onclick = calculate
 
@@ -34,37 +35,45 @@ function calculate() {
 
     let date = new Date(year, month - 1, day)
 
-    console.log()
-
     clearInputs()
-
-    if (isEmpty(day, month, year) || isError(day, month, year, date)) {
-        dateError(date)
-        error(day, month, year)
+    if (isEmpty(day, month, year) || isError(day, month, year)) {
+        emptyError(day, month, year)
+        dateError(day, month, year, date)
+        futureError(day, month, year)
         inputError(day, month, year)
         clearResults()
     } else {
-        years.innerText = getYearsMonthsDays(date)[0]
-        months.innerText = getYearsMonthsDays(date)[1]
-        days.innerText = getYearsMonthsDays(date)[2]
+        years.innerText = getYearsMonthsDays(year, month, day).years || 0
+        months.innerText = getYearsMonthsDays(year, month, day).months || 0
+        days.innerText = getYearsMonthsDays(year, month, day).days || 0
     }
 }
 
-function getYearsMonthsDays(date) {
-    let milliYears = today - date
-    let years = Math.floor(milliYears / 31556952000)
-    let milliMonths = milliYears % 31556952000
-    let months = Math.floor(milliMonths / 2629746000)
-    let milliDays = milliMonths % 2629746000
-    let days = Math.floor(milliDays / 86400000)
-    return [years, months, days]
+function getYearsMonthsDays(year, month, day) {
+    let d1 = LocalDate.now()
+    let d2 = LocalDate.of(year, month, day)
+    let str = d1.until(d2).toString()
+    
+    let resArr = str.replace(/[P -]/g, ' ')
+        .replace(/[Y]/, 'Y ')
+        .replace(/[M]/, 'M ')
+        .split(' ')
+
+    let res = resArr.reduce((obj, item) => {
+        if (item.includes('Y')) obj['years'] = +item.replace('Y', '')
+        if (item.includes('M')) obj['months'] = +item.replace('M', '')
+        if (item.includes('D')) obj['days'] = +item.replace('D', '')
+        return obj
+    }, {})
+
+    return res
 }
 
 function isEmpty(day, month, year) {
     return day == 0 || month == 0 || year == 0
 }
 
-function isError(day, month, year, date) {
+function isError(day, month, year) {
     return (
         (day > 31 || day < 0)
         || (month > 12 || month < 0)
@@ -72,7 +81,8 @@ function isError(day, month, year, date) {
         || !day
         || !month
         || !year
-        || !dateInPast(date, today)
+        || !isDateValid(day, month, year)
+        || isInFuture(day, month, year)
     )
 }
 
@@ -106,7 +116,7 @@ function inputError(day, month, year) {
     }
 }
 
-function error(day, month, year) {
+function emptyError(day, month, year) {
     if (!day) {
         dayError.innerText = 'This field is required'
         dayLabel.style.color = redText
@@ -137,8 +147,20 @@ function error(day, month, year) {
     }
 }
 
-function dateError(date) {
-    if (!dateInPast(date, today)) {
+function dateError(day, month, year) {
+    if (!isDateValid(day, month, year)) {
+        dayError.innerText = 'Must be valid date'
+        dayLabel.style.color = redText
+        dayInput.style.borderColor = redBorder
+        monthLabel.style.color = redText
+        monthInput.style.borderColor = redBorder
+        yearLabel.style.color = redText
+        yearInput.style.borderColor = redBorder
+    }
+}
+
+function futureError(day, month, year) {
+    if (isInFuture(day, month, year)) {
         dayError.innerText = 'Must be valid date'
         dayLabel.style.color = redText
         dayInput.style.borderColor = redBorder
@@ -169,7 +191,23 @@ function clearResults() {
     days.innerText = '- -'
 }
 
-function dateInPast(firstDate, secondDate) {
-    return firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0)
+function isDateValid(day, month, year) {
+    try { if (LocalDate.of(year, month, day)) return true }
+    catch {
+        console.log('valid: invalid date')
+        return false
+    }
+}
+
+function isInFuture(day, month, year) {
+    try {
+        let d1 = LocalDate.of(year, month, day)
+        let d2 = LocalDate.now()
+        return d1.isAfter(d2)
+    }
+    catch {
+        console.log('future: invalid date')
+        return false
+    }
 }
 
