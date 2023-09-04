@@ -34,7 +34,7 @@ function calculate() {
 
     let date = new Date(year, month - 1, day)
 
-    console.log(moment(date))
+    console.log()
 
     clearInputs()
 
